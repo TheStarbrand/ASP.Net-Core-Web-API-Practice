@@ -466,11 +466,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\divin\\OneDrive\\Desktop\\C-C++-C#\\ASP.Net Core Web API\\api\\api.csproj",
+      "projectUniqueName": "C:\\Users\\divin\\OneDrive\\Desktop\\C-C++-C#\\API Project\\ASP.Net-Core-Web-API-Practice\\api\\api.csproj",
       "projectName": "api",
-      "projectPath": "C:\\Users\\divin\\OneDrive\\Desktop\\C-C++-C#\\ASP.Net Core Web API\\api\\api.csproj",
+      "projectPath": "C:\\Users\\divin\\OneDrive\\Desktop\\C-C++-C#\\API Project\\ASP.Net-Core-Web-API-Practice\\api\\api.csproj",
       "packagesPath": "C:\\Users\\divin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\divin\\OneDrive\\Desktop\\C-C++-C#\\ASP.Net Core Web API\\api\\obj\\",
+      "outputPath": "C:\\Users\\divin\\OneDrive\\Desktop\\C-C++-C#\\API Project\\ASP.Net-Core-Web-API-Practice\\api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
