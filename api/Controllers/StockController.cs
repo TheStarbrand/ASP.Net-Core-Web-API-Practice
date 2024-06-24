@@ -26,8 +26,8 @@ namespace api.Controllers
 
         [HttpGet("{id}")]
         public IActionResult GetById([FromRoute] int id){
-            var stock = _context.Stocks.Find();
-            
+            var stock = _context.Stocks.Find(id);
+
             if(stock == null){
                 return NotFound();
             }
