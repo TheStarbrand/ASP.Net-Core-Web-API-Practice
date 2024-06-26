@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Dtos.Stock;
+using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -20,18 +22,27 @@ namespace api.Controllers
 
         [HttpGet]
         public IActionResult GetAll(){
-            var stocks = _context.Stocks.ToList();
+            var stocks = _context.Stocks.ToList()
+            .Select(s => s.ToStockDto());
             return Ok(stocks);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}")] //search
         public IActionResult GetById([FromRoute] int id){
             var stock = _context.Stocks.Find(id);
 
             if(stock == null){
                 return NotFound();
             }
-            return Ok(stock);
+            return Ok(stock.ToStockDto());
+        }
+
+        [HttpPost] //create
+        public IActionResult Create([FromBody] CreateStockRequestDto stockDto){
+            var stockModel = stockDto.ToStockFromCreateDto();
+            _context.Stocks.Add(stockModel);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel);
         }
 
     }
