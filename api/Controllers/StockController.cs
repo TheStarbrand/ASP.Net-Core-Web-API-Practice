@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Stock;
+using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using api.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
@@ -17,11 +19,15 @@ namespace api.Controllers
     public class StockController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
-        public StockController(ApplicationDBContext context){
+        private readonly IStockRepository _stockRepo;
+
+        public StockController(ApplicationDBContext context, IStockRepository stockRepo){
             _context = context;
+            _stockRepo = stockRepo;
+
         }
 
-        [HttpPost] //create
+        [HttpPost] // create
         public IActionResult Create([FromBody] CreateStockRequestDto stockDto){
             var stockModel = stockDto.ToStockFromCreateDto();
             _context.Stocks.Add(stockModel);
@@ -30,12 +36,12 @@ namespace api.Controllers
         }
         [HttpGet]
         public async Task<IActionResult> GetAll(){
-            var stocks = await _context.Stocks.ToListAsync();
+            var stocks = await _stockRepo.GetAllAsync();
             var stockDto = stocks.Select(s => s.ToStockDto());
             return Ok(stocks);
         }
 
-        [HttpGet("{id}")] //search/read    
+        [HttpGet("{id}")] // search/read    
 
     public async Task<IActionResult> GetById([FromRoute] int id){
             var stock = await _context.Stocks.FindAsync(id);
@@ -46,7 +52,7 @@ namespace api.Controllers
             return Ok(stock.ToStockDto());
         }
 
-        [HttpPut] //update
+        [HttpPut] // update
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateStockRequestDto updateDto){
             var stockModel = await _context.Stocks.FirstOrDefaultAsync(x => x.Id == id);
