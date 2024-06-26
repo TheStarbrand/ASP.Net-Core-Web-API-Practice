@@ -14,7 +14,8 @@ namespace api.Repositories
     {
         private readonly ApplicationDBContext _context;
         private readonly IStockRepository _stockRepo;
-        public StockRepository(ApplicationDBContext context){
+        public StockRepository(ApplicationDBContext context)
+        {
             _context = context;
         }
 
@@ -29,11 +30,12 @@ namespace api.Repositories
         {
             var stockModel = await _context.Stocks.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (stockModel == null){
+            if (stockModel == null)
+            {
                 return null;
             }
             _context.Stocks.Remove(stockModel);
-            await _context.SaveChangesAsync();            
+            await _context.SaveChangesAsync();
             return stockModel;
         }
 
@@ -42,14 +44,33 @@ namespace api.Repositories
             return _context.Stocks.ToListAsync();
         }
 
-        public Task<Stock?> GetByIdAsync(int id)
+        public async Task<Stock?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Stocks.FindAsync(id);
         }
 
-        public Task<Stock> UpdateAsync(int id, UpdateStockRequestDto stockDto)
+        public async Task<Stock> UpdateAsync(int id, UpdateStockRequestDto stockDto)
         {
-            throw new NotImplementedException();
+            var existingStock = await _context.Stocks.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (existingStock == null)
+            {
+                return null;
+            }
+            
+            existingStock.Symbol = stockDto.Symbol;
+            existingStock.CompanyName = stockDto.CompanyName;
+            existingStock.Purchase = stockDto.Purchase;
+            existingStock.Industry = stockDto.Industry;
+            existingStock.LastDiv = stockDto.LastDiv;
+            existingStock.MarketCap = stockDto.MarketCap;
+
+            await _context.SaveChangesAsync();
+            return (existingStock);
+
+
+
+
         }
     }
 }
